@@ -1,0 +1,572 @@
+﻿<Window x:Class="TokenApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Aplusz" Height="510" Width="1024" Background="#1c1c1c" Closing="Window_Closing">
+
+    <Grid x:Name="ParentGrid" Margin="20">
+        <Grid x:Name="ApiRootPage" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />  <!-- Header -->
+                <RowDefinition Height="*" />   <!-- Token Section -->
+            </Grid.RowDefinitions>
+    
+            <!-- Header Section -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Szerver elérhetőség"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0" />
+            </Grid>
+
+            <!-- Token Section -->
+            <Grid Grid.Row="1" Background="#2f2f2f" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Középre igazított Grid -->
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBox x:Name="txtRootUrl" Width="300" Margin="0,0,0,10" 
+                                 Background="#3c3c3c" 
+                                 Foreground="White" 
+                                 BorderBrush="#7f7f7f" 
+                                 BorderThickness="1" 
+                                 Padding="10" 
+                                 FontSize="16" />
+                     
+                        <Button Content="Tovább" Width="300" Margin="0,10,0,0" 
+                                Background="#007ACC" 
+                                Foreground="White" 
+                                FontSize="16" 
+                                Padding="10" 
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                MaxWidth="150"
+                                Click="ApiRootPageNext">
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+
+
+        <Grid x:Name="LoginPage" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />  <!-- Header -->
+                <RowDefinition Height="*" />   <!-- Token Section -->
+            </Grid.RowDefinitions>
+            
+            <!-- Header Section -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Azonosítás"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0" />
+            </Grid>
+            <Grid Grid.Row="1" Background="#2f2f2f" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Középre igazított Grid -->
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBox x:Name="txtEmail" Width="300" Margin="0,0,0,10" 
+                                 Background="#3c3c3c" 
+                                 Foreground="White" 
+                                 BorderBrush="#7f7f7f" 
+                                 BorderThickness="1" 
+                                 Padding="10" 
+                                 FontSize="16" />
+                        
+                        <PasswordBox x:Name="txtPassword" Width="300" Margin="0,0,0,10" 
+                                 Background="#3c3c3c" 
+                                 Foreground="White" 
+                                 BorderBrush="#7f7f7f" 
+                                 BorderThickness="1" 
+                                 Padding="10" 
+                                 FontSize="16" />
+                     
+                        <Button Content="Tovább" Width="300" Margin="0,10,0,0" 
+                                Background="#007ACC" 
+                                Foreground="White" 
+                                FontSize="16" 
+                                Padding="10" 
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                MaxWidth="150"
+                                Click="LoginPageNext">
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="SecondPasswordPage" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />  <!-- Header -->
+                <RowDefinition Height="*" />   <!-- Token Section -->
+            </Grid.RowDefinitions>
+            <!-- Header Section -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Másodlagos jelszó"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0" />
+            </Grid>
+            <!-- Token Section -->
+            <Grid Grid.Row="1" Background="#2f2f2f" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Középre igazított Grid -->
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                    <StackPanel VerticalAlignment="Center">
+                        <PasswordBox x:Name="txtSecondaryPassword" Width="300" Margin="0,0,0,10" 
+                                 Background="#3c3c3c" 
+                                 Foreground="White" 
+                                 BorderBrush="#7f7f7f" 
+                                 BorderThickness="1" 
+                                 Padding="10" 
+                                 FontSize="16" />
+                     
+                        <Button Content="Tovább" Width="300" Margin="0,10,0,0" 
+                                Background="#007ACC" 
+                                Foreground="White" 
+                                FontSize="16" 
+                                Padding="10" 
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                MaxWidth="150"
+                                Click="SecondaryPasswordPageNext">
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+
+        <Grid x:Name="AliasPage" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />  <!-- Header -->
+                <RowDefinition Height="*" />   <!-- Token Section -->
+            </Grid.RowDefinitions>
+            <!-- Header Section -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Kasszakód"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0" />
+            </Grid>
+            <!-- Token Section -->
+            <Grid Grid.Row="1" Background="#2f2f2f" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Középre igazított Grid -->
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBox x:Name="txtAlias" Width="300" Margin="0,0,0,10" 
+                                 Background="#3c3c3c" 
+                                 Foreground="White" 
+                                 BorderBrush="#7f7f7f" 
+                                 BorderThickness="1" 
+                                 Padding="10" 
+                                 FontSize="16" />
+                     
+                        <Button Content="Tovább" Width="300" Margin="0,10,0,0" 
+                                Background="#007ACC" 
+                                Foreground="White" 
+                                FontSize="16" 
+                                Padding="10" 
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                MaxWidth="150"
+                                Click="AliasPageNext">
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="MainPage" Visibility="Collapsed">
+
+            <!-- Grid sorok beállítása -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />  <!-- Header -->
+                <RowDefinition Height="180" />   <!-- Token Section -->
+                <RowDefinition Height="20" />  <!-- Separator -->
+                <RowDefinition Height="180" /> <!-- Connected Devices Section -->
+            </Grid.RowDefinitions>
+
+            <!-- Header Section -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Aplusz"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0" />
+
+                <Button Content="↺"
+                        Foreground="White"
+                        Background="Transparent"
+                        FontSize="18"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        BorderThickness="0"
+                        Margin="0,0,0,0"
+                        Click="SwitchToSettings"
+                        Grid.Column="0" />
+            </Grid>
+
+            <!-- Token Section -->
+            <Grid Grid.Row="1" Background="#2f2f2f" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Token Text -->
+                <TextBlock Text="Generált token kód"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           Margin="20,20,0,0"
+                           Grid.Row="0" />
+
+                <!-- Token Code -->
+                <TextBlock x:Name="TokenCode"
+                           Text="AAA111"
+                           Foreground="White"
+                           FontSize="34"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,30,0,0"
+                           Grid.Row="1" />
+
+                <!-- ProgressBar -->
+                <ProgressBar x:Name="TokenProgressBar"
+                             Height="8"
+                             VerticalAlignment="Bottom"
+                             Minimum="0"
+                             Maximum="6000"
+                             Value="6000"
+                             Foreground="#26c6da"
+                             Background="#383838"
+                             Margin="10,30,10,10"
+                             Grid.Row="2" />
+            </Grid>
+
+            <!-- Separator Line -->
+            <Border Grid.Row="2" Background="#383838" Height="0" />
+
+            <!-- Connected Devices Section -->
+            <StackPanel Grid.Row="3" Background="#2f2f2f">
+                <TextBlock Text="Kapcsolt eszközök"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           Margin="20,20,0,0" />
+
+                <Grid Margin="20,40,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Eszköz típusok -->
+                    <TextBlock Text="POS terminál"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="Blokk nyomtató"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="Adóügyi egység"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="Irodai nyomtató"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="3"
+                               HorizontalAlignment="Left" />
+
+                    <!-- Eszköz nevek -->
+                    <TextBlock Text="ICT 2020 Six"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                    <TextBlock Text="Epson Tm-T20II"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                    <TextBlock Text="AEE"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                    <TextBlock Text="HP LaserJet M110we (7MD66E)"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="3"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                </Grid>
+            </StackPanel>
+
+        </Grid>
+        <Grid x:Name="SettingsPage" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />  <!-- Header -->
+                <RowDefinition Height="180" />   <!-- Token Section -->
+                <RowDefinition Height="20" />  <!-- Separator -->
+                <RowDefinition Height="180" /> <!-- Connected Devices Section -->
+            </Grid.RowDefinitions>
+
+            <!-- Header Section -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Beállítások"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0" />
+
+                <Button Content="X"
+                        Foreground="White"
+                        Background="Transparent"
+                        FontSize="18"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        BorderThickness="0"
+                        Margin="0,0,0,0"
+                        Click="SwitchToMainPage"
+                        Grid.Column="1" /> <!-- Fixed Grid.Column to 1 -->
+            </Grid>
+
+            <!-- Token Section -->
+            <StackPanel Grid.Row="1" Background="#2f2f2f"> <!-- Changed to Grid.Row="1" -->
+                <TextBlock Text="Kapcsolat"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           Margin="10,10,0,0" />
+
+                <Grid Margin="20,40,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Eszköz típusok -->
+                    <TextBlock Text="Kassza azonosító"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="Szerver elérhetősége"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left" />
+
+                    <!-- Eszköz nevek -->
+                    <TextBlock Text="ABC123"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                    <TextBlock Text="0.0.0.0:0000"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                </Grid>
+            </StackPanel>
+
+            <!-- Separator Line -->
+            <Border Grid.Row="2" Background="#383838" Height="0" />
+
+            <!-- Connected Devices Section -->
+            <StackPanel Grid.Row="3" Background="#2f2f2f">
+                <TextBlock Text="Kapcsolt eszközök"
+                           Foreground="White"
+                           FontSize="18"
+                           HorizontalAlignment="Left"
+                           Margin="20,20,0,0" />
+
+                <Grid Margin="20,40,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Eszköz típusok -->
+                    <TextBlock Text="POS terminál"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left" />
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock Text="Blokk nyomtató"
+                                   Foreground="White"
+                                   FontSize="14"
+                                   HorizontalAlignment="Left" />
+                        <Button Content="✎" Background="Transparent" Foreground="White" BorderThickness="0" Click="EditButton_Click" />
+                    </StackPanel>
+                    <TextBlock Text="Adóügyi egység"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left" />
+                    <TextBlock Text="Irodai nyomtató"
+                               Foreground="White"
+                               FontSize="14"
+                               Grid.Row="0"
+                               Grid.Column="3"
+                               HorizontalAlignment="Left" />
+
+                    <!-- Eszköz nevek -->
+                    <TextBlock
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            x:Name="PrinterNameTxt"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            FontSize="14"
+                            HorizontalAlignment="Left"
+                            Margin="0,15,0,0"
+                            Visibility="Visible" />
+
+                        <ComboBox x:Name="PrinterNameComboBox" Width="200" Margin="-40,15,0,0" Visibility="Collapsed"
+                                  SelectionChanged="PrinterSelectionChanged">
+                            <ComboBoxItem Content="Printer 1" />
+                            <ComboBoxItem Content="Printer 2" />
+                            <ComboBoxItem Content="Printer 3" />
+                        </ComboBox>
+                    </Grid>
+                    <TextBlock
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                    <TextBlock
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="14"
+                               Grid.Row="1"
+                               Grid.Column="3"
+                               HorizontalAlignment="Left"
+                               Margin="0,15,0,0" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>
