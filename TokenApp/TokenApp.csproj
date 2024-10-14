@@ -11,12 +11,27 @@
 
     <ItemGroup>
       <Folder Include="Models\" />
-      <Folder Include="ViewModels\" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="MaterialDesignColors" Version="3.1.1-ci780" />
       <PackageReference Include="MaterialDesignThemes" Version="5.1.1-ci780" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Properties\Settings.Designer.cs">
+        <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Settings.settings</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Properties\Settings.settings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
 </Project>
