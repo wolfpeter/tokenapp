@@ -18,6 +18,8 @@ public class MainWindowsViewModel : INotifyPropertyChanged
     private string token;
     private bool configured;
     private bool loggedIn;
+    private string selectedBlockPrinter;
+    private string selectedLanguage;
 
     public MainWindowsViewModel()
     {
@@ -25,6 +27,8 @@ public class MainWindowsViewModel : INotifyPropertyChanged
         LoggedIn = Properties.Settings.Default.LoggedIn;
         Configured = Properties.Settings.Default.Configured;
         ApiBaseUrl = Properties.Settings.Default.ApiBaseUrl;
+        SelectedBlockPrinter = Properties.Settings.Default.SelectedBlockPrinter;
+        SelectedLanguage = Properties.Settings.Default.SelectedLanguage;
         
         tokenService = new TokenService();
         apiService = new ApiService();
@@ -111,6 +115,40 @@ public class MainWindowsViewModel : INotifyPropertyChanged
                 
                 Properties.Settings.Default.LoggedIn = loggedIn;
                 Properties.Settings.Default.Save();
+            }
+        }
+    }
+    
+    public string SelectedBlockPrinter
+    {
+        get { return selectedBlockPrinter; }
+        set
+        {
+            if (selectedBlockPrinter != value)
+            {
+                selectedBlockPrinter = value;
+                
+                Properties.Settings.Default.SelectedBlockPrinter = selectedBlockPrinter;
+                Properties.Settings.Default.Save();
+                
+                OnPropertyChanged(nameof(SelectedBlockPrinter));
+            }
+        }
+    }
+    
+    public string SelectedLanguage
+    {
+        get { return selectedLanguage; }
+        set
+        {
+            if (selectedLanguage != value)
+            {
+                selectedLanguage = value;
+                
+                Properties.Settings.Default.SelectedLanguage = selectedLanguage;
+                Properties.Settings.Default.Save();
+                
+                OnPropertyChanged(nameof(SelectedLanguage));
             }
         }
     }

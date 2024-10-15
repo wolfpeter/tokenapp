@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System.Drawing.Printing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using TokenApp.Services;
 using TokenApp.ViewModels;
+using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace TokenApp.Views;
 
@@ -23,6 +25,11 @@ public partial class MainWindow : Window
         
         StartTokenTimer();
         CreateTrayIcon();
+        LoadPrinters();
+        LoadSavedBlockPrinter();
+        
+        ChangeLanguage(_mainViewModel.SelectedLanguage);
+        SetSelectedLanguage(_mainViewModel.SelectedLanguage);
         
         Start();
     }
@@ -51,17 +58,14 @@ public partial class MainWindow : Window
     
     private void CheckPasswordAndCallMethod(object sender, EventArgs e)
     {
-        // Jelszó bekérése
         MasterPasswordWindow passwordDialog = new MasterPasswordWindow();
-        if (passwordDialog.ShowDialog() == true)  // Ha az OK gombra kattintott
+        if (passwordDialog.ShowDialog() == true)
         {
             string enteredPassword = passwordDialog.Password;
-            string correctPassword = "mySecretPassword";  // Az elvárt jelszó
+            string correctPassword = "test";
             
-            // Jelszó ellenőrzése
             if (enteredPassword == correctPassword)
             {
-                // Hívjuk meg a kívánt metódust
                 ResetSettings(null, null);
             }
         }
@@ -116,16 +120,71 @@ public partial class MainWindow : Window
         _mainViewModel.GenerateToken();
     }
 
-    private void EditButton_Click(object sender, RoutedEventArgs e)
+    private void BlockPrinterEditButton_Click(object sender, RoutedEventArgs e)
     {
-        PrinterNameTxt.Visibility = Visibility.Collapsed;
-        PrinterNameComboBox.Visibility = Visibility.Visible;
+        BlockPrinterNameTxt.Visibility = Visibility.Collapsed;
+        BlockPrinterNameComboBox.Visibility = Visibility.Visible;
     }
 
-    private void PrinterSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void BlockPrinterSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        PrinterNameTxt.Visibility = Visibility.Visible;
-        PrinterNameComboBox.Visibility = Visibility.Collapsed;
+        string selectedPrinter = BlockPrinterNameComboBox.SelectedItem.ToString();
+
+        if (!string.IsNullOrEmpty(selectedPrinter))
+        {
+            _mainViewModel.SelectedBlockPrinter = selectedPrinter;
+            
+            BlockPrinterNameTxt.Visibility = Visibility.Visible;
+            BlockPrinterNameComboBox.Visibility = Visibility.Collapsed;
+        }
+    }
+    
+    private void LoadPrinters()
+    {
+        BlockPrinterNameComboBox.Items.Add("Test!");
+        foreach (string printer in PrinterSettings.InstalledPrinters)
+        {
+            BlockPrinterNameComboBox.Items.Add(printer);
+        }
+    }
+
+    private void ChangeLanguage(string langCode)
+    {
+        ResourceDictionary dict = new ResourceDictionary();
+        switch (langCode)
+        {
+            case "en":
+                dict.Source = new Uri("Resources/Strings.en.xaml", UriKind.Relative);
+                break;
+            default:
+                dict.Source = new Uri("Resources/Strings.hu.xaml", UriKind.Relative);
+                break;
+        }
+
+        Application.Current.Resources.MergedDictionaries.Clear();
+        Application.Current.Resources.MergedDictionaries.Add(dict);
+        
+        _mainViewModel.SelectedLanguage = langCode;
+    }
+    
+    private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedLanguage = (sender as ComboBox).SelectedItem as ComboBoxItem;
+        string langCode = selectedLanguage.Tag.ToString();
+    
+        ChangeLanguage(langCode);
+    }
+    
+    private void SetSelectedLanguage(string langCode)
+    {
+        foreach (ComboBoxItem item in cbxLanguage.Items)
+        {
+            if (item.Tag.ToString() == langCode)
+            {
+                cbxLanguage.SelectedItem = item;
+                break;
+            }
+        }
     }
 
     private void ApiRootPageNext(object sender, RoutedEventArgs e)
@@ -263,6 +322,15 @@ public partial class MainWindow : Window
         
             // Nyissuk meg a menüt
             button.ContextMenu.IsOpen = true;
+        }
+    }
+    
+    private void LoadSavedBlockPrinter()
+    {
+        string savedPrinter = Properties.Settings.Default.SelectedBlockPrinter;
+        if (!string.IsNullOrEmpty(savedPrinter) && BlockPrinterNameComboBox.Items.Contains(savedPrinter))
+        {
+            BlockPrinterNameComboBox.SelectedItem = savedPrinter;
         }
     }
     

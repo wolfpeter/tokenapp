@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <system:String x:Key="GeneratedTokenCode">Generated token code</system:String>
+    <system:String x:Key="ConnectedDevices">Connected devices</system:String>
+    <system:String x:Key="Authentication">Authentication</system:String>
+    <system:String x:Key="Server">Server address</system:String>
+    <system:String x:Key="CassaCode">Cassa alias</system:String>
+    <system:String x:Key="PosTerminal">POS terminal</system:String>
+    <system:String x:Key="BlockPrinter">Block printer</system:String>
+    <system:String x:Key="TaxDevice">Tax device</system:String>
+    <system:String x:Key="OfficePrinter">Office printer</system:String>
+    <system:String x:Key="Settings">Settings</system:String>
+    <system:String x:Key="Logout">Logout</system:String>
+    <system:String x:Key="Reset">Reset</system:String>
+    <system:String x:Key="ResetPassword">Reset password</system:String>
+    <system:String x:Key="ResetPasswordText">Please enter the password to restore!</system:String>
+    <system:String x:Key="Ok">OK</system:String>
+    <system:String x:Key="Cancel">Cancel</system:String>
+    <system:String x:Key="Next">Next</system:String>
+    <system:String x:Key="SecondaryPassword">Secondary password</system:String>
+</ResourceDictionary>
