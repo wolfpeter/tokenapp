@@ -199,7 +199,9 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(_mainViewModel.Email) || !string.IsNullOrEmpty(txtPassword.Password))
         {
+            LoginPage.IsEnabled = false;
             bool result = await _mainViewModel.Login(txtPassword.Password);
+            LoginPage.IsEnabled = true;
             
             if (result)
             {
@@ -216,7 +218,9 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(txtSecondaryPassword.Password))
         {
+            SecondPasswordPage.IsEnabled = false;
             bool result = await _mainViewModel.LoginWithSecondaryPassword(txtSecondaryPassword.Password);
+            SecondPasswordPage.IsEnabled = true;
             
             if (result)
             {
@@ -314,13 +318,8 @@ public partial class MainWindow : Window
         Button button = sender as Button;
         if (button != null && button.ContextMenu != null)
         {
-            // Biztosítsuk, hogy a ContextMenu leváljon a régi helyről
             button.ContextMenu.PlacementTarget = button;
-        
-            // Állítsuk be, hogy a gombnál jelenjen meg a menü
             button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-        
-            // Nyissuk meg a menüt
             button.ContextMenu.IsOpen = true;
         }
     }
