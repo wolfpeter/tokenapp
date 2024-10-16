@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using TokenApp.Services;
 using TokenApp.ViewModels;
 using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
@@ -141,7 +142,6 @@ public partial class MainWindow : Window
     
     private void LoadPrinters()
     {
-        BlockPrinterNameComboBox.Items.Add("Test!");
         foreach (string printer in PrinterSettings.InstalledPrinters)
         {
             BlockPrinterNameComboBox.Items.Add(printer);
@@ -322,6 +322,12 @@ public partial class MainWindow : Window
             button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             button.ContextMenu.IsOpen = true;
         }
+    }
+
+    private void PrintTest(object sender, RoutedEventArgs e)
+    {
+        PrintService printService = new PrintService();
+        printService.PrintDocument(_mainViewModel.SelectedBlockPrinter);
     }
     
     private void LoadSavedBlockPrinter()

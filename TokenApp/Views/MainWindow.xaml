@@ -273,6 +273,7 @@
                                 <MenuItem Header="{DynamicResource Settings}" Click="SwitchToSettings" />
                                 <MenuItem Header="{DynamicResource Logout}" Click="Logout" />
                                 <MenuItem Header="{DynamicResource Reset}" Click="CheckPasswordAndCallMethod" />
+                                <MenuItem Header="Nyomtatás teszt" Click="PrintTest" />
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
