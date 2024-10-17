@@ -20,4 +20,5 @@
     <system:String x:Key="Cancel">Mégsem</system:String>
     <system:String x:Key="Next">Tovább</system:String>
     <system:String x:Key="SecondaryPassword">Másodlagos jelszó</system:String>
+    <system:String x:Key="Language">Nyelv</system:String>
 </ResourceDictionary>

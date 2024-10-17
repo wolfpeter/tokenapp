@@ -10,10 +10,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
       <PackageReference Include="MaterialDesignColors" Version="3.1.1-ci780" />
       <PackageReference Include="MaterialDesignThemes" Version="5.1.1-ci780" />
@@ -33,6 +29,13 @@
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\settings.jpg" />
+      <Resource Include="Resources\settings.jpg" />
+      <None Remove="Resources\settings.png" />
+      <Resource Include="Resources\settings.png" />
     </ItemGroup>
 
 </Project>

@@ -49,7 +49,7 @@ public partial class MainWindow : Window
         }
         else if (!_mainViewModel.LoggedIn && !string.IsNullOrEmpty(_mainViewModel.ApiBaseUrl))
         {
-            SwitchToLoginPage();
+            SwitchToLoginPage(null, null);
         }
         else
         {
@@ -166,6 +166,18 @@ public partial class MainWindow : Window
         
         _mainViewModel.SelectedLanguage = langCode;
     }
+
+    private void SetLanguageToEnglish(object sender, EventArgs e)
+    {
+        ChangeLanguage("en");
+        SetSelectedLanguage("en");
+    }
+    
+    private void SetLanguageToHungarian(object sender, EventArgs e)
+    {
+        ChangeLanguage("hu");
+        SetSelectedLanguage("hu");
+    }
     
     private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -177,13 +189,14 @@ public partial class MainWindow : Window
     
     private void SetSelectedLanguage(string langCode)
     {
-        foreach (ComboBoxItem item in cbxLanguage.Items)
+        if (langCode == "en")
         {
-            if (item.Tag.ToString() == langCode)
-            {
-                cbxLanguage.SelectedItem = item;
-                break;
-            }
+            HungarianLang.IsChecked = false;
+            EnglishLang.IsChecked = true;
+        } else if (langCode == "hu")
+        {
+            EnglishLang.IsChecked = false;
+            HungarianLang.IsChecked = true;
         }
     }
 
@@ -191,7 +204,7 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(_mainViewModel.ApiBaseUrl))
         {
-            SwitchToLoginPage();
+            SwitchToAliasPage();
         }
     }
     
@@ -209,7 +222,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                SwitchToLoginPage();
+                SwitchToLoginPage(sender, e);
             }
         }
     }
@@ -225,7 +238,7 @@ public partial class MainWindow : Window
             if (result)
             {
                 _mainViewModel.LoggedIn = true;
-                SwitchToAliasPage();
+                SwitchToSettings(sender, e);
             }
             else
             {
@@ -236,7 +249,7 @@ public partial class MainWindow : Window
     
     private void AliasPageNext(object sender, RoutedEventArgs e)
     {
-        SwitchToSettings(sender, e);
+        SwitchToLoginPage(sender, e);
         _mainViewModel.Configured = true;
     }
     
@@ -262,7 +275,7 @@ public partial class MainWindow : Window
         txtRootUrl.Focus();
     }
     
-    private void SwitchToLoginPage()
+    private void SwitchToLoginPage(object sender, RoutedEventArgs e)
     {
         CloseAllGridsVisibility();
         txtEmail.Clear();
@@ -285,18 +298,6 @@ public partial class MainWindow : Window
         txtAlias.Clear();
         AliasPage.Visibility = Visibility.Visible;
         txtAlias.Focus();
-    }
-
-    private void Logout(object sender, RoutedEventArgs e)
-    {
-        txtEmail.Clear();
-        txtPassword.Clear();
-        txtSecondaryPassword.Clear();
-        txtAlias.Clear();
-        
-        _mainViewModel.LoggedIn = false;
-        
-        Start();
     }
 
     private void ResetSettings(object sender, RoutedEventArgs e)
