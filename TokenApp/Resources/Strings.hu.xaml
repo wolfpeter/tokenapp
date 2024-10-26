@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <system:String x:Key="GeneratedTokenCode">Generált token kód</system:String>
+    <system:String x:Key="ConnectedDevices">Kapcsolt eszközök</system:String>
+    <system:String x:Key="Authentication">Kérem azonosítsa magát!</system:String>
+    <system:String x:Key="ServerTitle">Adja meg a szerver elérését!</system:String>
+    <system:String x:Key="Server">Szerver elérése</system:String>
+    <system:String x:Key="CassaCodeTitle">Adja meg a kassza kódját!</system:String>
+    <system:String x:Key="Connection">Kapcsolat</system:String>
+    <system:String x:Key="PosTerminal">POS terminál</system:String>
+    <system:String x:Key="BlockPrinter">Blokk nyomtató</system:String>
+    <system:String x:Key="TaxDevice">Adóügyi egység</system:String>
+    <system:String x:Key="OfficePrinter">Irodai nyomtató</system:String>
+    <system:String x:Key="Settings">Beállítások</system:String>
+    <system:String x:Key="Logout">Kijelentkezés</system:String>
+    <system:String x:Key="Reset">Alap állapot visszaállítása</system:String>
+    <system:String x:Key="ResetPassword">Visszaállítási jelszó</system:String>
+    <system:String x:Key="ResetPasswordText">Kérem adja meg a jelszót a visszaállításhoz!</system:String>
+    <system:String x:Key="Ok">OK</system:String>
+    <system:String x:Key="Cancel">Mégsem</system:String>
+    <system:String x:Key="Next">Tovább</system:String>
+    <system:String x:Key="SecondaryPasswordTitle">Adja meg a másodlagos jelszót!!</system:String>
+    <system:String x:Key="Language">Nyelv</system:String>
+    <system:String x:Key="ConnectPage">Kapcsolódás a szerverhez</system:String>
+    <system:String x:Key="Connecting">Kapcsolódás...</system:String>
+    <system:String x:Key="ApiRootUrl">Szerver elérése</system:String>
+    <system:String x:Key="Email">E-mail</system:String>
+    <system:String x:Key="Password">Jelszó</system:String>
+    <system:String x:Key="SecondaryPassword">Másodlagos jelszó</system:String>
+    <system:String x:Key="Alias">Kasszakód</system:String>
+</ResourceDictionary>

@@ -1,9 +1,12 @@
-﻿using System.Windows;
+﻿using System.Drawing.Printing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using TokenApp.Services;
 using TokenApp.ViewModels;
+using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace TokenApp.Views;
 
@@ -23,25 +26,22 @@ public partial class MainWindow : Window
         
         StartTokenTimer();
         CreateTrayIcon();
+        LoadPrinters();
+        LoadSavedBlockPrinter();
+        
+        ChangeLanguage(_mainViewModel.SelectedLanguage);
+        SetSelectedLanguage(_mainViewModel.SelectedLanguage);
         
         Start();
     }
 
-    private void Start()
+    private async Task Start()
     {
         CloseAllGridsVisibility();
 
-        if (_mainViewModel.LoggedIn && _mainViewModel.Configured)
+        if (_mainViewModel.Configured)
         {
-            SwitchToMainPage(null, null);
-        }
-        else if (_mainViewModel.LoggedIn && !_mainViewModel.Configured)
-        {
-            SwitchToSettings(null, null);
-        }
-        else if (!_mainViewModel.LoggedIn && !string.IsNullOrEmpty(_mainViewModel.ApiBaseUrl))
-        {
-            SwitchToLoginPage();
+            SwitchToConnect(null, null);
         }
         else
         {
@@ -51,17 +51,14 @@ public partial class MainWindow : Window
     
     private void CheckPasswordAndCallMethod(object sender, EventArgs e)
     {
-        // Jelszó bekérése
         MasterPasswordWindow passwordDialog = new MasterPasswordWindow();
-        if (passwordDialog.ShowDialog() == true)  // Ha az OK gombra kattintott
+        if (passwordDialog.ShowDialog() == true)
         {
             string enteredPassword = passwordDialog.Password;
-            string correctPassword = "mySecretPassword";  // Az elvárt jelszó
+            string correctPassword = "test";
             
-            // Jelszó ellenőrzése
             if (enteredPassword == correctPassword)
             {
-                // Hívjuk meg a kívánt metódust
                 ResetSettings(null, null);
             }
         }
@@ -73,6 +70,19 @@ public partial class MainWindow : Window
         notifyIcon.Icon = SystemIcons.Application; //TODO Icon file!
         notifyIcon.Visible = true;
         notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+        
+        var contextMenu = new ContextMenuStrip();
+        var exitItem = new ToolStripMenuItem("Kilépés");
+        exitItem.Click += ExitItem_Click;
+        contextMenu.Items.Add(exitItem);
+
+        notifyIcon.ContextMenuStrip = contextMenu;
+    }
+    
+    private void ExitItem_Click(object sender, EventArgs e)
+    {
+        notifyIcon.Visible = false;
+        Application.Current.Shutdown();
     }
     
     private void NotifyIcon_DoubleClick(object sender, EventArgs e)
@@ -116,23 +126,90 @@ public partial class MainWindow : Window
         _mainViewModel.GenerateToken();
     }
 
-    private void EditButton_Click(object sender, RoutedEventArgs e)
+    private void BlockPrinterEditButton_Click(object sender, RoutedEventArgs e)
     {
-        PrinterNameTxt.Visibility = Visibility.Collapsed;
-        PrinterNameComboBox.Visibility = Visibility.Visible;
+        BlockPrinterNameTxt.Visibility = Visibility.Collapsed;
+        BlockPrinterNameComboBox.Visibility = Visibility.Visible;
     }
 
-    private void PrinterSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void BlockPrinterSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        PrinterNameTxt.Visibility = Visibility.Visible;
-        PrinterNameComboBox.Visibility = Visibility.Collapsed;
+        string selectedPrinter = BlockPrinterNameComboBox.SelectedItem.ToString();
+
+        if (!string.IsNullOrEmpty(selectedPrinter))
+        {
+            _mainViewModel.SelectedBlockPrinter = selectedPrinter;
+            
+            BlockPrinterNameTxt.Visibility = Visibility.Visible;
+            BlockPrinterNameComboBox.Visibility = Visibility.Collapsed;
+        }
+    }
+    
+    private void LoadPrinters()
+    {
+        foreach (string printer in PrinterSettings.InstalledPrinters)
+        {
+            BlockPrinterNameComboBox.Items.Add(printer);
+        }
+    }
+
+    private void ChangeLanguage(string langCode)
+    {
+        ResourceDictionary dict = new ResourceDictionary();
+        switch (langCode)
+        {
+            case "en":
+                dict.Source = new Uri("Resources/Strings.en.xaml", UriKind.Relative);
+                break;
+            default:
+                dict.Source = new Uri("Resources/Strings.hu.xaml", UriKind.Relative);
+                break;
+        }
+
+        Application.Current.Resources.MergedDictionaries.Clear();
+        Application.Current.Resources.MergedDictionaries.Add(dict);
+        
+        _mainViewModel.SelectedLanguage = langCode;
+    }
+
+    private void SetLanguageToEnglish(object sender, EventArgs e)
+    {
+        ChangeLanguage("en");
+        SetSelectedLanguage("en");
+    }
+    
+    private void SetLanguageToHungarian(object sender, EventArgs e)
+    {
+        ChangeLanguage("hu");
+        SetSelectedLanguage("hu");
+    }
+    
+    private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedLanguage = (sender as ComboBox).SelectedItem as ComboBoxItem;
+        string langCode = selectedLanguage.Tag.ToString();
+    
+        ChangeLanguage(langCode);
+    }
+    
+    private void SetSelectedLanguage(string langCode)
+    {
+        if (langCode == "en")
+        {
+            HungarianLang.IsChecked = false;
+            EnglishLang.IsChecked = true;
+        } else if (langCode == "hu")
+        {
+            EnglishLang.IsChecked = false;
+            HungarianLang.IsChecked = true;
+        }
     }
 
     private void ApiRootPageNext(object sender, RoutedEventArgs e)
     {
         if (!string.IsNullOrEmpty(_mainViewModel.ApiBaseUrl))
         {
-            SwitchToLoginPage();
+            SwitchToAliasPage();
         }
     }
     
@@ -140,7 +217,9 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(_mainViewModel.Email) || !string.IsNullOrEmpty(txtPassword.Password))
         {
+            LoginPage.IsEnabled = false;
             bool result = await _mainViewModel.Login(txtPassword.Password);
+            LoginPage.IsEnabled = true;
             
             if (result)
             {
@@ -148,7 +227,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                SwitchToLoginPage();
+                SwitchToLoginPage(sender, e);
             }
         }
     }
@@ -157,12 +236,13 @@ public partial class MainWindow : Window
     {
         if (!string.IsNullOrEmpty(txtSecondaryPassword.Password))
         {
+            SecondPasswordPage.IsEnabled = false;
             bool result = await _mainViewModel.LoginWithSecondaryPassword(txtSecondaryPassword.Password);
+            SecondPasswordPage.IsEnabled = true;
             
             if (result)
             {
-                _mainViewModel.LoggedIn = true;
-                SwitchToAliasPage();
+                SwitchToSettings(sender, e);
             }
             else
             {
@@ -173,8 +253,31 @@ public partial class MainWindow : Window
     
     private void AliasPageNext(object sender, RoutedEventArgs e)
     {
-        SwitchToSettings(sender, e);
+        SwitchToConnect(sender, e);
+    }
+    
+    private void ConnectPageNext(object sender, RoutedEventArgs e)
+    {
         _mainViewModel.Configured = true;
+        SwitchToMainPage(sender, e);
+    }
+    
+    private async Task SwitchToConnect(object sender, RoutedEventArgs e)
+    {
+        ConnectingProgressBar.IsIndeterminate = true;
+        ConnectingProgressBar.Value = 0;
+        CloseAllGridsVisibility();
+        ConnectPage.Visibility = Visibility.Visible;
+
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        bool result = await _mainViewModel.ConnectToWebSocket(cancellationTokenSource.Token);
+
+        if (result)
+        {
+            ConnectingProgressBar.IsIndeterminate = false;
+            ConnectingProgressBar.Value = 100;
+            btnConnect.Visibility = Visibility.Visible;
+        }
     }
     
     private void SwitchToSettings(object sender, RoutedEventArgs e)
@@ -199,7 +302,7 @@ public partial class MainWindow : Window
         txtRootUrl.Focus();
     }
     
-    private void SwitchToLoginPage()
+    private void SwitchToLoginPage(object sender, RoutedEventArgs e)
     {
         CloseAllGridsVisibility();
         txtEmail.Clear();
@@ -224,18 +327,6 @@ public partial class MainWindow : Window
         txtAlias.Focus();
     }
 
-    private void Logout(object sender, RoutedEventArgs e)
-    {
-        txtEmail.Clear();
-        txtPassword.Clear();
-        txtSecondaryPassword.Clear();
-        txtAlias.Clear();
-        
-        _mainViewModel.LoggedIn = false;
-        
-        Start();
-    }
-
     private void ResetSettings(object sender, RoutedEventArgs e)
     {
         txtRootUrl.Clear();
@@ -255,14 +346,24 @@ public partial class MainWindow : Window
         Button button = sender as Button;
         if (button != null && button.ContextMenu != null)
         {
-            // Biztosítsuk, hogy a ContextMenu leváljon a régi helyről
             button.ContextMenu.PlacementTarget = button;
-        
-            // Állítsuk be, hogy a gombnál jelenjen meg a menü
             button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-        
-            // Nyissuk meg a menüt
             button.ContextMenu.IsOpen = true;
+        }
+    }
+
+    private void PrintTest(object sender, RoutedEventArgs e)
+    {
+        PrintService printService = new PrintService();
+        printService.PrintDocument(_mainViewModel.SelectedBlockPrinter);
+    }
+    
+    private void LoadSavedBlockPrinter()
+    {
+        string savedPrinter = Properties.Settings.Default.SelectedBlockPrinter;
+        if (!string.IsNullOrEmpty(savedPrinter) && BlockPrinterNameComboBox.Items.Contains(savedPrinter))
+        {
+            BlockPrinterNameComboBox.SelectedItem = savedPrinter;
         }
     }
     

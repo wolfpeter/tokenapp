@@ -11,6 +11,8 @@ public class MainWindowsViewModel : INotifyPropertyChanged
     
     private readonly TokenService tokenService;
     private readonly ApiService apiService;
+    private readonly MainService mainService;
+    private readonly WebSocketService webSocketService;
     
     private string apiBaseUrl;
     private string email;
@@ -18,6 +20,8 @@ public class MainWindowsViewModel : INotifyPropertyChanged
     private string token;
     private bool configured;
     private bool loggedIn;
+    private string selectedBlockPrinter;
+    private string selectedLanguage;
 
     public MainWindowsViewModel()
     {
@@ -25,11 +29,17 @@ public class MainWindowsViewModel : INotifyPropertyChanged
         LoggedIn = Properties.Settings.Default.LoggedIn;
         Configured = Properties.Settings.Default.Configured;
         ApiBaseUrl = Properties.Settings.Default.ApiBaseUrl;
+        SelectedBlockPrinter = Properties.Settings.Default.SelectedBlockPrinter;
+        SelectedLanguage = Properties.Settings.Default.SelectedLanguage;
         
         tokenService = new TokenService();
         apiService = new ApiService();
+        mainService = new MainService();
+        webSocketService = new WebSocketService();
         
         GenerateTokenCommand = new RelayCommand(GenerateToken);
+
+        DeviceId = mainService.GenerateDeviceId();
     }
     
     public string ApiBaseUrl
@@ -114,6 +124,60 @@ public class MainWindowsViewModel : INotifyPropertyChanged
             }
         }
     }
+    
+    public string DeviceId { get; }
+
+    public string SelectedBlockPrinter
+    {
+        get { return selectedBlockPrinter; }
+        set
+        {
+            if (selectedBlockPrinter != value)
+            {
+                selectedBlockPrinter = value;
+                
+                Properties.Settings.Default.SelectedBlockPrinter = selectedBlockPrinter;
+                Properties.Settings.Default.Save();
+                
+                OnPropertyChanged(nameof(SelectedBlockPrinter));
+            }
+        }
+    }
+    
+    public string SelectedLanguage
+    {
+        get { return selectedLanguage; }
+        set
+        {
+            if (selectedLanguage != value)
+            {
+                selectedLanguage = value;
+                
+                Properties.Settings.Default.SelectedLanguage = selectedLanguage;
+                Properties.Settings.Default.Save();
+                
+                OnPropertyChanged(nameof(SelectedLanguage));
+            }
+        }
+    }
+    
+    public async Task<bool> ConnectToWebSocket(CancellationToken cancellationToken)
+    {
+        if (ApiBaseUrl == "test" && Alias == "test")
+        {
+            await Task.Delay(2000, cancellationToken);
+            return true;
+        }
+        
+        return await webSocketService.ConnectWebSocketAsync(ApiBaseUrl, cancellationToken);
+    }
+    
+    public async Task<bool> SendRegistrationToWebSocket()
+    {
+        if (ApiBaseUrl == "test" && Alias == "test") return true;
+        
+        return await webSocketService.SendRegistrationMessageAsync();
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -129,11 +193,21 @@ public class MainWindowsViewModel : INotifyPropertyChanged
 
     public async Task<bool> Login(string password)
     {
+        if (ApiBaseUrl == "test" && Email == "test" && password == "test")
+        {
+            return true;
+        }
+        
         return await apiService.Login(ApiBaseUrl, Email, password);
     }
 
     public async Task<bool> LoginWithSecondaryPassword(string password)
     {
+        if (ApiBaseUrl == "test" && Email == "test" && password == "test")
+        {
+            return true;
+        }
+        
         return await apiService.LoginWithSecondaryPassword(password);
     }
 }

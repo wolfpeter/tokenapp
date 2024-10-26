@@ -10,12 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="MaterialDesignColors" Version="3.1.1-ci780" />
-      <PackageReference Include="MaterialDesignThemes" Version="5.1.1-ci780" />
+      <PackageReference Include="DeviceId" Version="6.7.0" />
+      <PackageReference Include="DeviceId.Windows" Version="6.6.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
@@ -32,6 +28,12 @@
         <Generator>SettingsSingleFileGenerator</Generator>
         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\settings.jpg" />
+      <None Remove="Resources\settings.png" />
+      <Resource Include="Resources\settings.png" />
     </ItemGroup>
 
 </Project>
