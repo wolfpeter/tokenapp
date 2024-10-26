@@ -10,8 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DeviceId" Version="6.7.0" />
-      <PackageReference Include="DeviceId.Windows" Version="6.6.0" />
+      <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
+      <PackageReference Include="MaterialDesignColors" Version="3.1.1-ci780" />
+      <PackageReference Include="MaterialDesignThemes" Version="5.1.1-ci780" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
@@ -32,6 +33,7 @@
 
     <ItemGroup>
       <None Remove="Resources\settings.jpg" />
+      <Resource Include="Resources\settings.jpg" />
       <None Remove="Resources\settings.png" />
       <Resource Include="Resources\settings.png" />
     </ItemGroup>

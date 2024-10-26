@@ -10,12 +10,13 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!-- Header Section -->
             <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{DynamicResource ServerTitle}"
+                <TextBlock Text="{DynamicResource Server}"
                            Foreground="White"
                            FontSize="18"
                            HorizontalAlignment="Left"
@@ -31,12 +32,6 @@
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
                     <StackPanel VerticalAlignment="Center">
-                        <Label Content="{DynamicResource ApiRootUrl}"
-                               Foreground="White"
-                               FontSize="16"
-                               Margin="0,0,0,5"
-                               HorizontalAlignment="Left" />
-        
                         <TextBox x:Name="txtRootUrl" Width="300" Margin="0,0,0,10"
                                  Background="#3c3c3c"
                                  Foreground="White"
@@ -58,7 +53,6 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-
             </Grid>
         </Grid>
 
@@ -110,7 +104,7 @@
                     </Button.ContextMenu>
                 </Button>
             </Grid>
-            <Grid Grid.Row="1" Background="#2f2f2f" Width="400" Height="300" HorizontalAlignment="Center"
+            <Grid Grid.Row="1" Background="#2f2f2f" Width="400" Height="200" HorizontalAlignment="Center"
                   VerticalAlignment="Center" Margin="0,10,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -118,12 +112,6 @@
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
                     <StackPanel VerticalAlignment="Center">
-                        <Label Content="{DynamicResource Email}"
-                               Foreground="White"
-                               FontSize="16"
-                               Margin="0,0,0,5"
-                               HorizontalAlignment="Left" />
-
                         <TextBox x:Name="txtEmail" Width="300" Margin="0,0,0,10"
                                  Background="#3c3c3c"
                                  Foreground="White"
@@ -132,12 +120,6 @@
                                  Padding="10"
                                  FontSize="16"
                                  Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-
-                        <Label Content="{DynamicResource Password}"
-                               Foreground="White"
-                               FontSize="16"
-                               Margin="0,0,0,5"
-                               HorizontalAlignment="Left" />
 
                         <PasswordBox x:Name="txtPassword" Width="300" Margin="0,0,0,10"
                                      Background="#3c3c3c"
@@ -172,7 +154,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{DynamicResource SecondaryPasswordTitle}"
+                <TextBlock Text="{DynamicResource SecondaryPassword}"
                            Foreground="White"
                            FontSize="18"
                            HorizontalAlignment="Left"
@@ -187,12 +169,6 @@
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
                     <StackPanel VerticalAlignment="Center">
-                        <Label Content="{DynamicResource SecondaryPassword}"
-                               Foreground="White"
-                               FontSize="16"
-                               Margin="0,0,0,5"
-                               HorizontalAlignment="Left" />
-
                         <PasswordBox x:Name="txtSecondaryPassword" Width="300" Margin="0,0,0,10"
                                      Background="#3c3c3c"
                                      Foreground="White"
@@ -214,6 +190,7 @@
                     </StackPanel>
                 </Grid>
             </Grid>
+
         </Grid>
 
         <Grid x:Name="AliasPage" Visibility="Collapsed">
@@ -226,7 +203,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{DynamicResource CassaCodeTitle}"
+                <TextBlock Text="{DynamicResource CassaCode}"
                            Foreground="White"
                            FontSize="18"
                            HorizontalAlignment="Left"
@@ -241,12 +218,6 @@
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
                     <StackPanel VerticalAlignment="Center">
-                        <Label Content="Alias"
-                               Foreground="White"
-                               FontSize="16"
-                               Margin="0,0,0,5"
-                               HorizontalAlignment="Left" />
-
                         <TextBox x:Name="txtAlias"
                                  Text="{Binding Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Width="300" Margin="0,0,0,10"
@@ -266,98 +237,6 @@
                                 Cursor="Hand"
                                 MaxWidth="150"
                                 Click="AliasPageNext">
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-        </Grid>
-        
-        <Grid x:Name="ConnectPage" Visibility="Collapsed">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{DynamicResource ConnectPage}"
-                           Foreground="White"
-                           FontSize="18"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Margin="0,0,0,0" />
-                <Button
-                    Foreground="White"
-                    Background="Transparent"
-                    FontSize="18"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
-                    Margin="0,0,0,0"
-                    Click="SettingsButton_Click"
-                    Grid.Column="0">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <ContentPresenter />
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                    <Image Source="pack://application:,,,/Resources/settings.png" Width="24" Height="24" />
-                    <Button.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{DynamicResource Reset}" Click="CheckPasswordAndCallMethod" />
-                        </ContextMenu>
-                    </Button.ContextMenu>
-                </Button>
-            </Grid>
-            <Grid Grid.Row="1" Background="#2f2f2f" Width="500" Height="300" HorizontalAlignment="Center"
-                  VerticalAlignment="Center" Margin="0,10,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
-                    <StackPanel VerticalAlignment="Center">
-                        <Label Content="DeviceId:" 
-                               Width="400" 
-                               Margin="0,0,0,10" 
-                               Foreground="White" 
-                               FontSize="16" />
-
-                        <Border BorderBrush="White" BorderThickness="1" Width="400" CornerRadius="5">
-                            <TextBox Text="{Binding DeviceId, Mode=OneWay}" 
-                                     IsReadOnly="True" 
-                                     Foreground="White" 
-                                     Background="#383838"
-                                     FontSize="16" 
-                                     BorderThickness="0" />
-                        </Border>
-
-                        <ProgressBar x:Name="ConnectingProgressBar"
-                                     Height="8"
-                                     Foreground="#26c6da"
-                                     Background="#383838"
-                                     Margin="10,30,10,10"
-                                     IsIndeterminate="True" />
-
-                        <Button Content="{DynamicResource Next}" Width="300" Margin="0,10,0,0"
-                                x:Name="btnConnect"
-                                Background="#26c6da"
-                                Foreground="White"
-                                FontSize="16"
-                                Padding="10"
-                                BorderThickness="0"
-                                Cursor="Hand"
-                                MaxWidth="150"
-                                Visibility="Hidden"
-                                Click="ConnectPageNext">
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -591,7 +470,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="{DynamicResource Alias}"
+                    <TextBlock Text="{DynamicResource CassaCode}"
                                Foreground="White"
                                FontSize="14"
                                Grid.Row="0"

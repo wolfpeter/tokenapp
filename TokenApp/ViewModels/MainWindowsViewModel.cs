@@ -11,8 +11,6 @@ public class MainWindowsViewModel : INotifyPropertyChanged
     
     private readonly TokenService tokenService;
     private readonly ApiService apiService;
-    private readonly MainService mainService;
-    private readonly WebSocketService webSocketService;
     
     private string apiBaseUrl;
     private string email;
@@ -34,12 +32,8 @@ public class MainWindowsViewModel : INotifyPropertyChanged
         
         tokenService = new TokenService();
         apiService = new ApiService();
-        mainService = new MainService();
-        webSocketService = new WebSocketService();
         
         GenerateTokenCommand = new RelayCommand(GenerateToken);
-
-        DeviceId = mainService.GenerateDeviceId();
     }
     
     public string ApiBaseUrl
@@ -125,8 +119,6 @@ public class MainWindowsViewModel : INotifyPropertyChanged
         }
     }
     
-    public string DeviceId { get; }
-
     public string SelectedBlockPrinter
     {
         get { return selectedBlockPrinter; }
@@ -160,24 +152,6 @@ public class MainWindowsViewModel : INotifyPropertyChanged
             }
         }
     }
-    
-    public async Task<bool> ConnectToWebSocket(CancellationToken cancellationToken)
-    {
-        if (ApiBaseUrl == "test" && Alias == "test")
-        {
-            await Task.Delay(2000, cancellationToken);
-            return true;
-        }
-        
-        return await webSocketService.ConnectWebSocketAsync(ApiBaseUrl, cancellationToken);
-    }
-    
-    public async Task<bool> SendRegistrationToWebSocket()
-    {
-        if (ApiBaseUrl == "test" && Alias == "test") return true;
-        
-        return await webSocketService.SendRegistrationMessageAsync();
-    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -193,21 +167,11 @@ public class MainWindowsViewModel : INotifyPropertyChanged
 
     public async Task<bool> Login(string password)
     {
-        if (ApiBaseUrl == "test" && Email == "test" && password == "test")
-        {
-            return true;
-        }
-        
         return await apiService.Login(ApiBaseUrl, Email, password);
     }
 
     public async Task<bool> LoginWithSecondaryPassword(string password)
     {
-        if (ApiBaseUrl == "test" && Email == "test" && password == "test")
-        {
-            return true;
-        }
-        
         return await apiService.LoginWithSecondaryPassword(password);
     }
 }
