@@ -1,12 +1,8 @@
-﻿using System.Drawing.Printing;
-using System.Printing;
+﻿using System.Printing;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Xps;
-using ESCPOS_NET;
 using FontFamily = System.Windows.Media.FontFamily;
-using FontStyle = System.Drawing.FontStyle;
-using Point = System.Drawing.Point;
 
 namespace TokenApp.Services;
 

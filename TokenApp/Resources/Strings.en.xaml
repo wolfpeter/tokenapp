@@ -4,6 +4,7 @@
     <system:String x:Key="GeneratedTokenCode">Generated token code</system:String>
     <system:String x:Key="ConnectedDevices">Connected devices</system:String>
     <system:String x:Key="Authentication">Authentication</system:String>
+    <system:String x:Key="ServerTitle">Server address</system:String>
     <system:String x:Key="Server">Server address</system:String>
     <system:String x:Key="CassaCode">Cassa alias</system:String>
     <system:String x:Key="PosTerminal">POS terminal</system:String>
@@ -18,6 +19,13 @@
     <system:String x:Key="Ok">OK</system:String>
     <system:String x:Key="Cancel">Cancel</system:String>
     <system:String x:Key="Next">Next</system:String>
-    <system:String x:Key="SecondaryPassword">Secondary password</system:String>
+    <system:String x:Key="SecondaryPasswordTitle">Secondary password</system:String>
     <system:String x:Key="Language">Language</system:String>
+    <system:String x:Key="ConnectPage">Connect to server</system:String>
+    <system:String x:Key="Connecting">Connecting...</system:String>
+    <system:String x:Key="ApiRootUrl">Server address</system:String>
+    <system:String x:Key="Email">E-mail</system:String>
+    <system:String x:Key="Password">Password</system:String>
+    <system:String x:Key="SecondaryPassword">Secondary password</system:String>
+    <system:String x:Key="Alias">Checkout code</system:String>
 </ResourceDictionary>

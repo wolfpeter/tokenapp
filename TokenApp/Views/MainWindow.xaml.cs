@@ -35,21 +35,13 @@ public partial class MainWindow : Window
         Start();
     }
 
-    private void Start()
+    private async Task Start()
     {
         CloseAllGridsVisibility();
 
-        if (_mainViewModel.LoggedIn && _mainViewModel.Configured)
+        if (_mainViewModel.Configured)
         {
-            SwitchToMainPage(null, null);
-        }
-        else if (_mainViewModel.LoggedIn && !_mainViewModel.Configured)
-        {
-            SwitchToSettings(null, null);
-        }
-        else if (!_mainViewModel.LoggedIn && !string.IsNullOrEmpty(_mainViewModel.ApiBaseUrl))
-        {
-            SwitchToLoginPage(null, null);
+            SwitchToConnect(null, null);
         }
         else
         {
@@ -78,6 +70,19 @@ public partial class MainWindow : Window
         notifyIcon.Icon = SystemIcons.Application; //TODO Icon file!
         notifyIcon.Visible = true;
         notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+        
+        var contextMenu = new ContextMenuStrip();
+        var exitItem = new ToolStripMenuItem("Kilépés");
+        exitItem.Click += ExitItem_Click;
+        contextMenu.Items.Add(exitItem);
+
+        notifyIcon.ContextMenuStrip = contextMenu;
+    }
+    
+    private void ExitItem_Click(object sender, EventArgs e)
+    {
+        notifyIcon.Visible = false;
+        Application.Current.Shutdown();
     }
     
     private void NotifyIcon_DoubleClick(object sender, EventArgs e)
@@ -237,7 +242,6 @@ public partial class MainWindow : Window
             
             if (result)
             {
-                _mainViewModel.LoggedIn = true;
                 SwitchToSettings(sender, e);
             }
             else
@@ -249,8 +253,31 @@ public partial class MainWindow : Window
     
     private void AliasPageNext(object sender, RoutedEventArgs e)
     {
-        SwitchToLoginPage(sender, e);
+        SwitchToConnect(sender, e);
+    }
+    
+    private void ConnectPageNext(object sender, RoutedEventArgs e)
+    {
         _mainViewModel.Configured = true;
+        SwitchToMainPage(sender, e);
+    }
+    
+    private async Task SwitchToConnect(object sender, RoutedEventArgs e)
+    {
+        ConnectingProgressBar.IsIndeterminate = true;
+        ConnectingProgressBar.Value = 0;
+        CloseAllGridsVisibility();
+        ConnectPage.Visibility = Visibility.Visible;
+
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        bool result = await _mainViewModel.ConnectToWebSocket(cancellationTokenSource.Token);
+
+        if (result)
+        {
+            ConnectingProgressBar.IsIndeterminate = false;
+            ConnectingProgressBar.Value = 100;
+            btnConnect.Visibility = Visibility.Visible;
+        }
     }
     
     private void SwitchToSettings(object sender, RoutedEventArgs e)
